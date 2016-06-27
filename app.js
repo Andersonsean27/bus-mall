@@ -16,16 +16,32 @@ var boots = new Product ('boots', 'images/boots.jpg');
 var breakfast = new Product ('breakfast', 'images/breakfast.jpg');
 var bubblegum = new Product ('bubblegum', 'images/bubblegum.jpg');
 var chair = new Product ('chair', 'images/chair.jpg');
-var cthulhu = new Product ('cthulhu', 'images/chair.jpg');
-var dogDuck = new Product ('docDuck', 'images/dogDuck.jpg');
+var cthulhu = new Product ('cthulhu', 'images/cthulhu.jpg');
+var dogDuck = new Product ('dogDuck', 'images/dogDuck.jpg');
 var dragon = new Product ('dragon', 'images/dragon.jpg');
 var pen = new Product ('pen', 'images/pen.jpg');
 var petSweep = new Product ('petSweep', 'images/petSweep.jpg');
 var scissors = new Product ('scissors', 'images/scissors.jpg');
 var shark = new Product ('shark', 'images/shark.jpg');
-var sweep = new Product ('sweep', 'images/sweep.jpg');
+var sweep = new Product ('sweep', 'images/sweep.png');
 var tauntaun = new Product ('tauntaun', 'images/tauntaun.jpg');
 var unicorn = new Product ('unicorn', 'images/unicorn.jpg');
 var usb = new Product ('usb', 'images/usb.gif');
 var waterCan = new Product ('waterCan', 'images/waterCan.jpg');
 var wineGlass = new Product ('wineGlass', 'images/wineGlass.jpg');
+
+var randomNumber = function () {
+  return Math.floor(Math.random() * (20));
+};
+var selectRandomPicture = function () {return productArray[randomNumber()];};
+var newImage = selectRandomPicture().filePath;
+var picOne = document.getElementById('picOne');
+picOne.src = newImage;
+var newImage2 = selectRandomPicture().filePath;
+var picTwo = document.getElementById('picTwo');
+picTwo.src = newImage2;
+var newImage3 = selectRandomPicture().filePath;
+var picThree = document.getElementById('picThree');
+picThree.src = newImage3;
+
+'picOne'.addEventListener('click', false);
