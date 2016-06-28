@@ -1,6 +1,5 @@
 'use strict';
 var tally = 0;
-
 function Product (imageName, filePath) {
   this.imageName = imageName;
   this.filePath = filePath;
@@ -48,25 +47,24 @@ picTwo.src = newImage();
 
 var picThree = document.getElementById('picThree');
 picThree.src = newImage();
-while (tally < 5) {
-  var repeatFunction = function (event) {
-    tally++;
-    console.log(this.src);
-    var currentImagePath = this.src;
-    for (var i = 0; i < productArray.length; i++) {
-      if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
-        productArray[i].timesClicked ++;
-        console.log(productArray[i].timesClicked);
-      }
+
+var repeatFunction = function (event) {
+  console.log(this.src);
+  var currentImagePath = this.src;
+  for (var i = 0; i < productArray.length; i++) {
+    if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
+      productArray[i].timesClicked ++;
+      console.log(productArray[i].timesClicked);
     }
-    var picOne = document.getElementById('picOne');
-    picOne.src = newImage();
-    var picTwo = document.getElementById('picTwo');
-    picTwo.src = newImage();
-    var picThree = document.getElementById('picThree');
-    picThree.src = newImage();
-  };
-}
+  }
+  var picOne = document.getElementById('picOne');
+  picOne.src = newImage();
+  var picTwo = document.getElementById('picTwo');
+  picTwo.src = newImage();
+  var picThree = document.getElementById('picThree');
+  picThree.src = newImage();
+};
+
 picOne.addEventListener('click', repeatFunction, false);
 picTwo.addEventListener('click', repeatFunction, false);
 picThree.addEventListener('click', repeatFunction, false);
