@@ -1,4 +1,5 @@
 'use strict';
+var tally = 0;
 
 function Product (imageName, filePath) {
   this.imageName = imageName;
@@ -33,15 +34,39 @@ var wineGlass = new Product ('wineGlass', 'images/wineGlass.jpg');
 var randomNumber = function () {
   return Math.floor(Math.random() * (20));
 };
-var selectRandomPicture = function () {return productArray[randomNumber()];};
-var newImage = selectRandomPicture().filePath;
+var selectRandomPicture = function () {
+  return productArray[randomNumber()];
+};
+var newImage = function () {
+  return selectRandomPicture().filePath;
+};
 var picOne = document.getElementById('picOne');
-picOne.src = newImage;
-var newImage2 = selectRandomPicture().filePath;
-var picTwo = document.getElementById('picTwo');
-picTwo.src = newImage2;
-var newImage3 = selectRandomPicture().filePath;
-var picThree = document.getElementById('picThree');
-picThree.src = newImage3;
+picOne.src = newImage();
 
-'picOne'.addEventListener('click', false);
+var picTwo = document.getElementById('picTwo');
+picTwo.src = newImage();
+
+var picThree = document.getElementById('picThree');
+picThree.src = newImage();
+while (tally < 5) {
+  var repeatFunction = function (event) {
+    tally++;
+    console.log(this.src);
+    var currentImagePath = this.src;
+    for (var i = 0; i < productArray.length; i++) {
+      if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
+        productArray[i].timesClicked ++;
+        console.log(productArray[i].timesClicked);
+      }
+    }
+    var picOne = document.getElementById('picOne');
+    picOne.src = newImage();
+    var picTwo = document.getElementById('picTwo');
+    picTwo.src = newImage();
+    var picThree = document.getElementById('picThree');
+    picThree.src = newImage();
+  };
+}
+picOne.addEventListener('click', repeatFunction, false);
+picTwo.addEventListener('click', repeatFunction, false);
+picThree.addEventListener('click', repeatFunction, false);
