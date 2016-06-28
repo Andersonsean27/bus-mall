@@ -1,5 +1,6 @@
 'use strict';
 var tally = 0;
+var currentDisplayArray = [];
 function Product (imageName, filePath) {
   this.imageName = imageName;
   this.filePath = filePath;
@@ -33,36 +34,69 @@ var wineGlass = new Product ('wineGlass', 'images/wineGlass.jpg');
 var randomNumber = function () {
   return Math.floor(Math.random() * (20));
 };
+
 var selectRandomPicture = function () {
   return productArray[randomNumber()];
 };
+
 var newImage = function () {
-  return selectRandomPicture().filePath;
+  return selectRandomPicture();
 };
-var picOne = document.getElementById('picOne');
-picOne.src = newImage();
 
-var picTwo = document.getElementById('picTwo');
-picTwo.src = newImage();
+var getPictures = function () {
 
-var picThree = document.getElementById('picThree');
-picThree.src = newImage();
+  var picOne = document.getElementById('picOne');
+  var productOne = newImage();
+  picOne.src = productOne.filePath;
+
+  var picTwo = document.getElementById('picTwo');
+  var productTwo = newImage();
+  picTwo.src = productTwo.filePath;
+
+  var picThree = document.getElementById('picThree');
+  var productThree = newImage();
+  picThree.src = productThree.filePath;
+  console.log(currentDisplayArray);
+  while (picOne.src === picTwo.src || picOne.src === picThree.src || picTwo.src === picThree.src) {
+    for (var i = 0; i < currentDisplayArray.length; i++) {
+      if (picOne.src === currentDisplayArray[i] || picTwo.src === currentDisplayArray[i] || picThree.src === currentDisplayArray[i]) {
+        productOne = newImage();
+        picOne.src = productOne.filePath;
+        productTwo = newImage();
+        picTwo.src = productTwo.filePath;
+        productThree = newImage();
+        picThree.src = productThree.filePath;
+        console.log('Previous Display Duplicate!!!');
+      }
+    }
+    productOne = newImage();
+    picOne.src = productOne.filePath;
+    productTwo = newImage();
+    picTwo.src = productTwo.filePath;
+    productThree = newImage();
+    picThree.src = productThree.filePath; //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward. 
+  }
+  productOne.timesShown++;
+  productTwo.timesShown++;
+  productThree.timesShown++;
+  currentDisplayArray = [picOne.src, picTwo.src, picThree.src];
+};
+getPictures();
 
 var repeatFunction = function (event) {
-  console.log(this.src);
-  var currentImagePath = this.src;
-  for (var i = 0; i < productArray.length; i++) {
-    if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
-      productArray[i].timesClicked ++;
-      console.log(productArray[i].timesClicked);
+  tally++;
+  if (tally < 26) {
+    console.log(tally);
+    console.log(this.src);
+    var currentImagePath = this.src;
+    for (var i = 0; i < productArray.length; i++) {
+      if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
+        productArray[i].timesClicked ++;
+        console.log(productArray[i].timesClicked);
+      }
     }
+    getPictures();
   }
-  var picOne = document.getElementById('picOne');
-  picOne.src = newImage();
-  var picTwo = document.getElementById('picTwo');
-  picTwo.src = newImage();
-  var picThree = document.getElementById('picThree');
-  picThree.src = newImage();
 };
 
 picOne.addEventListener('click', repeatFunction, false);
