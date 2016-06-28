@@ -1,5 +1,7 @@
 'use strict';
 var tally = 0;
+var button = document.getElementById('results');
+document.getElementById('results').hidden = true;
 var currentDisplayArray = [];
 function Product (imageName, filePath) {
   this.imageName = imageName;
@@ -89,7 +91,7 @@ getPictures();
 
 var repeatFunction = function (event) {
   tally++;
-  if (tally < 26) {
+  if (tally < 25) {
     console.log(tally);
     console.log(this.src);
     var currentImagePath = this.src;
@@ -100,6 +102,9 @@ var repeatFunction = function (event) {
       }
     }
     getPictures();
+  }
+  else {
+    document.getElementById('results').hidden=false;
   }
 };
 
@@ -128,11 +133,12 @@ var makeAChart = function () {
     labels: productNames(),
     datasets: [{
       label: 'Product Clicks',
-      data: getProductClicks()
+      data: getProductClicks(),
+      backgroundColor: '#ccf5ff'
     }]
   };
 
-var results = document.getElementById("results").getContext("2d");
+  var results = document.getElementById('chart').getContext('2d');
   new Chart.Bar(results, {
     data: chartData,
     options: {
@@ -147,3 +153,5 @@ var results = document.getElementById("results").getContext("2d");
     }
   });
 };
+
+button.addEventListener('click', makeAChart, false);
