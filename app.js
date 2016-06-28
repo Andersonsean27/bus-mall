@@ -10,6 +10,7 @@ function Product (imageName, filePath) {
 }
 var productArray = [];
 
+
 var bag = new Product ('bag', 'images/bag.jpg');
 var banana = new Product ('banana', 'images/banana.jpg');
 var bathroom = new Product ('bathroom', 'images/bathroom.jpg');
@@ -105,3 +106,44 @@ var repeatFunction = function (event) {
 picOne.addEventListener('click', repeatFunction, false);
 picTwo.addEventListener('click', repeatFunction, false);
 picThree.addEventListener('click', repeatFunction, false);
+
+var productNames = function () {
+  var namesArray = [];
+  for (var i = 0; i < productArray.length; i++) {
+    namesArray.push(productArray[i].imageName);
+  }
+  return namesArray;
+};
+
+var getProductClicks = function () {
+  var clicksArray = [];
+  for(var i = 0; i < productArray.length; i++) {
+    clicksArray.push(productArray[i].timesClicked);
+  }
+  return clicksArray;
+};
+
+var makeAChart = function () {
+  var chartData = {
+    labels: productNames(),
+    datasets: [{
+      label: 'Product Clicks',
+      data: getProductClicks()
+    }]
+  };
+
+var results = document.getElementById("results").getContext("2d");
+  new Chart.Bar(results, {
+    data: chartData,
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+};
