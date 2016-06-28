@@ -74,13 +74,16 @@ var getPictures = function () {
     productTwo = newImage();
     picTwo.src = productTwo.filePath;
     productThree = newImage();
-    picThree.src = productThree.filePath; //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward. 
+    picThree.src = productThree.filePath;
+
+     //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward.
   }
   productOne.timesShown++;
   productTwo.timesShown++;
   productThree.timesShown++;
   currentDisplayArray = [picOne.src, picTwo.src, picThree.src];
 };
+
 getPictures();
 
 var repeatFunction = function (event) {
