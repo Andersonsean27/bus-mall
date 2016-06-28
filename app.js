@@ -1,5 +1,7 @@
 'use strict';
 var tally = 0;
+var button = document.getElementById('results');
+document.getElementById('results').hidden = true;
 var currentDisplayArray = [];
 function Product (imageName, filePath) {
   this.imageName = imageName;
@@ -9,6 +11,7 @@ function Product (imageName, filePath) {
   productArray.push(this);
 }
 var productArray = [];
+
 
 var bag = new Product ('bag', 'images/bag.jpg');
 var banana = new Product ('banana', 'images/banana.jpg');
@@ -88,7 +91,7 @@ getPictures();
 
 var repeatFunction = function (event) {
   tally++;
-  if (tally < 26) {
+  if (tally < 25) {
     console.log(tally);
     console.log(this.src);
     var currentImagePath = this.src;
@@ -100,8 +103,55 @@ var repeatFunction = function (event) {
     }
     getPictures();
   }
+  else {
+    document.getElementById('results').hidden=false;
+  }
 };
 
 picOne.addEventListener('click', repeatFunction, false);
 picTwo.addEventListener('click', repeatFunction, false);
 picThree.addEventListener('click', repeatFunction, false);
+
+var productNames = function () {
+  var namesArray = [];
+  for (var i = 0; i < productArray.length; i++) {
+    namesArray.push(productArray[i].imageName);
+  }
+  return namesArray;
+};
+
+var getProductClicks = function () {
+  var clicksArray = [];
+  for(var i = 0; i < productArray.length; i++) {
+    clicksArray.push(productArray[i].timesClicked);
+  }
+  return clicksArray;
+};
+
+var makeAChart = function () {
+  var chartData = {
+    labels: productNames(),
+    datasets: [{
+      label: 'Product Clicks',
+      data: getProductClicks(),
+      backgroundColor: '#ccf5ff'
+    }]
+  };
+
+  var results = document.getElementById('chart').getContext('2d');
+  new Chart.Bar(results, {
+    data: chartData,
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+};
+
+button.addEventListener('click', makeAChart, false);
