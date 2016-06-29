@@ -46,44 +46,52 @@ var newImage = function () {
 };
 
 var getPictures = function () {
-
-  var picOne = document.getElementById('picOne');
-  var productOne = newImage();
-  picOne.src = productOne.filePath;
-
-  var picTwo = document.getElementById('picTwo');
-  var productTwo = newImage();
-  picTwo.src = productTwo.filePath;
-
-  var picThree = document.getElementById('picThree');
-  var productThree = newImage();
-  picThree.src = productThree.filePath;
-  console.log(currentDisplayArray);
-  while (picOne.src === picTwo.src || picOne.src === picThree.src || picTwo.src === picThree.src) {
-    for (var i = 0; i < currentDisplayArray.length; i++) {
-      if (picOne.src === currentDisplayArray[i] || picTwo.src === currentDisplayArray[i] || picThree.src === currentDisplayArray[i]) {
-        productOne = newImage();
-        picOne.src = productOne.filePath;
-        productTwo = newImage();
-        picTwo.src = productTwo.filePath;
-        productThree = newImage();
-        picThree.src = productThree.filePath;
-        console.log('Previous Display Duplicate!!!');
-      }
-    }
-    productOne = newImage();
+  if (localStorage.data) {
+    getPictures();
+  }
+  else {
+    var picOne = document.getElementById('picOne');
+    var productOne = newImage();
     picOne.src = productOne.filePath;
-    productTwo = newImage();
+
+    var picTwo = document.getElementById('picTwo');
+    var productTwo = newImage();
     picTwo.src = productTwo.filePath;
-    productThree = newImage();
+
+    var picThree = document.getElementById('picThree');
+    var productThree = newImage();
     picThree.src = productThree.filePath;
+    console.log(currentDisplayArray);
+    while (picOne.src === picTwo.src || picOne.src === picThree.src || picTwo.src === picThree.src) {
+      for (var i = 0; i < currentDisplayArray.length; i++) {
+        if (picOne.src === currentDisplayArray[i] || picTwo.src === currentDisplayArray[i] || picThree.src === currentDisplayArray[i]) {
+          productOne = newImage();
+          picOne.src = productOne.filePath;
+          productTwo = newImage();
+          picTwo.src = productTwo.filePath;
+          productThree = newImage();
+          picThree.src = productThree.filePath;
+          console.log('Previous Display Duplicate!!!');
+        }
+      }
+      productOne = newImage();
+      picOne.src = productOne.filePath;
+      productTwo = newImage();
+      picTwo.src = productTwo.filePath;
+      productThree = newImage();
+      picThree.src = productThree.filePath;
 
      //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward.
+    }
+    productOne.timesShown++;
+    productTwo.timesShown++;
+    productThree.timesShown++;
+
+    console.log(productOne.timesShown);
+    console.log(productTwo.timesShown);
+    console.log(productThree.timesShown);
+    currentDisplayArray = [picOne.src, picTwo.src, picThree.src];
   }
-  productOne.timesShown++;
-  productTwo.timesShown++;
-  productThree.timesShown++;
-  currentDisplayArray = [picOne.src, picTwo.src, picThree.src];
 };
 
 getPictures();
@@ -118,7 +126,11 @@ var productNames = function () {
   }
   return namesArray;
 };
-
+var setNamestoLocalStorage = function () {
+  var names = productNames();
+  console.log(names);
+  localStorage.setItem('names', JSON.stringify(names));
+};
 var getProductClicks = function () {
   var clicksArray = [];
   for(var i = 0; i < productArray.length; i++) {
@@ -126,6 +138,14 @@ var getProductClicks = function () {
   }
   return clicksArray;
 };
+setNamestoLocalStorage();
+
+var setDatatoLocalStorage = function () {
+  var data = getProductClicks();
+  console.log(data);
+  localStorage.setItem('data', JSON.stringify(data));
+};
+
 
 var makeAChart = function () {
   var chartData = {
@@ -152,5 +172,9 @@ var makeAChart = function () {
     }
   });
 };
+
+picOne.addEventListener('click', setDatatoLocalStorage , false);
+picTwo.addEventListener('click', setDatatoLocalStorage, false);
+picThree.addEventListener('click', setDatatoLocalStorage, false);
 
 button.addEventListener('click', makeAChart, false);
