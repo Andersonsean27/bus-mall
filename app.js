@@ -12,7 +12,6 @@ function Product (imageName, filePath) {
 }
 var productArray = [];
 
-
 var bag = new Product ('bag', 'images/bag.jpg');
 var banana = new Product ('banana', 'images/banana.jpg');
 var bathroom = new Product ('bathroom', 'images/bathroom.jpg');
@@ -104,7 +103,7 @@ var repeatFunction = function (event) {
     getPictures();
   }
   else {
-    document.getElementById('results').hidden=false;
+    document.getElementById('results').hidden = false;
   }
 };
 
