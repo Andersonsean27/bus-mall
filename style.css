@@ -2,6 +2,10 @@
     font-family: helvetica;
   }
 
+body {
+  background-color: #ffffcc;
+}
+
 header {
     background-color: #BBE80C;
     opacity: .7;
