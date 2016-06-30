@@ -2,7 +2,7 @@
 var tally = 0;
 var button = document.getElementById('results');
 document.getElementById('results').hidden = true;
-var currentDisplayArray = [];
+var previousDisplayArray = [];
 function Product (imageName, filePath) {
   this.imageName = imageName;
   this.filePath = filePath;
@@ -33,20 +33,25 @@ var usb = new Product ('usb', 'images/usb.gif');
 var waterCan = new Product ('waterCan', 'images/waterCan.jpg');
 var wineGlass = new Product ('wineGlass', 'images/wineGlass.jpg');
 
+if (localStorage.data) {
+  console.log('local storage exists');
+  var myData = JSON.parse(localStorage.data);
+  var myViews = JSON.parse(localStorage.views);
+  for (var i = 0; i < productArray.length; i++) {
+    productArray[i].timesClicked = myData[i];
+    productArray[i].timesShown = myViews[i];
+  }
+} else {
+  console.log('There is no local storage.');
+}
 var randomNumber = function () {
-  return Math.floor(Math.random() * (20));
+  return Math.floor(Math.random() * (productArray.length));
 };
-
-var selectRandomPicture = function () {
+var newImage = function () {
   return productArray[randomNumber()];
 };
 
-var newImage = function () {
-  return selectRandomPicture();
-};
-
 var getPictures = function () {
-
   var picOne = document.getElementById('picOne');
   var productOne = newImage();
   picOne.src = productOne.filePath;
@@ -58,17 +63,17 @@ var getPictures = function () {
   var picThree = document.getElementById('picThree');
   var productThree = newImage();
   picThree.src = productThree.filePath;
-  console.log(currentDisplayArray);
+  // console.log(previousDisplayArray);
   while (picOne.src === picTwo.src || picOne.src === picThree.src || picTwo.src === picThree.src) {
-    for (var i = 0; i < currentDisplayArray.length; i++) {
-      if (picOne.src === currentDisplayArray[i] || picTwo.src === currentDisplayArray[i] || picThree.src === currentDisplayArray[i]) {
+    for (var i = 0; i < previousDisplayArray.length; i++) {
+      if (picOne.src === previousDisplayArray[i] || picTwo.src === previousDisplayArray[i] || picThree.src === previousDisplayArray[i]) {
         productOne = newImage();
         picOne.src = productOne.filePath;
         productTwo = newImage();
         picTwo.src = productTwo.filePath;
         productThree = newImage();
         picThree.src = productThree.filePath;
-        console.log('Previous Display Duplicate!!!');
+        // console.log('Previous Display Duplicate!!!');
       }
     }
     productOne = newImage();
@@ -78,26 +83,29 @@ var getPictures = function () {
     productThree = newImage();
     picThree.src = productThree.filePath;
 
-     //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward.
+   //This code is not doing exactly what I am wanting it to do, but it is functional enough to move forward.
   }
   productOne.timesShown++;
   productTwo.timesShown++;
   productThree.timesShown++;
-  currentDisplayArray = [picOne.src, picTwo.src, picThree.src];
-};
 
+  // console.log(productOne.timesShown);
+  // console.log(productTwo.timesShown);
+  // console.log(productThree.timesShown);
+  previousDisplayArray = [picOne.src, picTwo.src, picThree.src];
+};
 getPictures();
 
 var repeatFunction = function (event) {
   tally++;
   if (tally < 25) {
-    console.log(tally);
-    console.log(this.src);
+    // console.log(tally);
+    // console.log(this.src);
     var currentImagePath = this.src;
     for (var i = 0; i < productArray.length; i++) {
       if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
         productArray[i].timesClicked ++;
-        console.log(productArray[i].timesClicked);
+        // console.log(productArray[i].timesClicked);
       }
     }
     getPictures();
@@ -118,13 +126,44 @@ var productNames = function () {
   }
   return namesArray;
 };
-
+var setNamestoLocalStorage = function () {
+  var names = productNames();
+  // console.log(names);
+  localStorage.setItem('names', JSON.stringify(names));
+};
 var getProductClicks = function () {
   var clicksArray = [];
   for(var i = 0; i < productArray.length; i++) {
     clicksArray.push(productArray[i].timesClicked);
   }
   return clicksArray;
+};
+setNamestoLocalStorage();
+
+var getProductViews = function () {
+  var viewsArray = [];
+  for(var i = 0; i < productArray.length; i++) {
+    viewsArray.push(productArray[i].timesShown);
+  }
+  return viewsArray;
+};
+
+var setDatatoLocalStorage = function () {
+  var data = getProductClicks();
+  var views = getProductViews();
+  // console.log(data);
+  // console.log(views);
+  localStorage.setItem('data', JSON.stringify(data));
+  localStorage.setItem('views', JSON.stringify(views));
+};
+
+var getPercentages = function () {
+  var percentageArray = [];
+  for (var i = 0; i < productArray.length; i++) {
+    var percentage = getProductClicks()[i] / getProductViews()[i];
+    percentageArray.push(percentage);
+  }
+  return percentageArray;
 };
 
 var makeAChart = function () {
@@ -152,5 +191,9 @@ var makeAChart = function () {
     }
   });
 };
+
+picOne.addEventListener('click', setDatatoLocalStorage , false);
+picTwo.addEventListener('click', setDatatoLocalStorage, false);
+picThree.addEventListener('click', setDatatoLocalStorage, false);
 
 button.addEventListener('click', makeAChart, false);

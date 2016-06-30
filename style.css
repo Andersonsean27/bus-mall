@@ -1,6 +1,32 @@
+* {
+    font-family: helvetica;
+  }
+
+body {
+  background-color: #ffffcc;
+}
+
+header {
+    background-color: #BBE80C;
+    opacity: .7;
+  }
+
+section {
+  width: 325px;
+
+}
+
 img {
-  width: 20%;
+  width: 300px;
+  height: 425px;
   display: inline-block;
-  float: left;
-  height: 20%;
+}
+
+.Box {
+  width: 1000px;
+  margin: 0 auto;
+}
+
+.Box section {
+  display: inline-block;
 }
