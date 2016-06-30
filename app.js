@@ -40,6 +40,7 @@ if (localStorage.data) {
   for (var i = 0; i < productArray.length; i++) {
     productArray[i].timesClicked = myData[i];
     productArray[i].timesShown = myViews[i];
+
   }
 } else {
   console.log('There is no local storage.');
@@ -148,22 +149,24 @@ var getProductViews = function () {
   return viewsArray;
 };
 
+var getPercentages = function () {
+  var percentageArray = [];
+  for (var i = 0; i < productArray.length; i++) {
+    var percentage = getProductClicks()[i] / getProductViews()[i] * 100;
+    percentageArray.push(percentage);
+  }
+  return percentageArray;
+};
+
+
 var setDatatoLocalStorage = function () {
   var data = getProductClicks();
   var views = getProductViews();
+  var percentage = getPercentages();
   // console.log(data);
   // console.log(views);
   localStorage.setItem('data', JSON.stringify(data));
   localStorage.setItem('views', JSON.stringify(views));
-};
-
-var getPercentages = function () {
-  var percentageArray = [];
-  for (var i = 0; i < productArray.length; i++) {
-    var percentage = getProductClicks()[i] / getProductViews()[i];
-    percentageArray.push(percentage);
-  }
-  return percentageArray;
 };
 
 var makeAChart = function () {
@@ -173,6 +176,9 @@ var makeAChart = function () {
       label: 'Product Clicks',
       data: getProductClicks(),
       backgroundColor: '#ccf5ff'
+    }, {label: 'Percentage Clicks',
+      data: getPercentages(),
+      backgroundColor: '#ccffcc'
     }]
   };
 
