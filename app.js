@@ -34,7 +34,6 @@ var waterCan = new Product ('waterCan', 'images/waterCan.jpg');
 var wineGlass = new Product ('wineGlass', 'images/wineGlass.jpg');
 
 if (localStorage.data) {
-  console.log('local storage exists');
   var myData = JSON.parse(localStorage.data);
   var myViews = JSON.parse(localStorage.views);
   for (var i = 0; i < productArray.length; i++) {
@@ -43,7 +42,6 @@ if (localStorage.data) {
 
   }
 } else {
-  console.log('There is no local storage.');
 }
 var randomNumber = function () {
   return Math.floor(Math.random() * (productArray.length));
@@ -64,7 +62,6 @@ var getPictures = function () {
   var picThree = document.getElementById('picThree');
   var productThree = newImage();
   picThree.src = productThree.filePath;
-  // console.log(previousDisplayArray);
   while (picOne.src === picTwo.src || picOne.src === picThree.src || picTwo.src === picThree.src) {
     for (var i = 0; i < previousDisplayArray.length; i++) {
       if (picOne.src === previousDisplayArray[i] || picTwo.src === previousDisplayArray[i] || picThree.src === previousDisplayArray[i]) {
@@ -74,7 +71,6 @@ var getPictures = function () {
         picTwo.src = productTwo.filePath;
         productThree = newImage();
         picThree.src = productThree.filePath;
-        // console.log('Previous Display Duplicate!!!');
       }
     }
     productOne = newImage();
@@ -90,9 +86,6 @@ var getPictures = function () {
   productTwo.timesShown++;
   productThree.timesShown++;
 
-  // console.log(productOne.timesShown);
-  // console.log(productTwo.timesShown);
-  // console.log(productThree.timesShown);
   previousDisplayArray = [picOne.src, picTwo.src, picThree.src];
 };
 getPictures();
@@ -100,13 +93,10 @@ getPictures();
 var repeatFunction = function (event) {
   tally++;
   if (tally < 25) {
-    // console.log(tally);
-    // console.log(this.src);
     var currentImagePath = this.src;
     for (var i = 0; i < productArray.length; i++) {
       if ('images' + currentImagePath.split('images')[1] === productArray[i].filePath) {
         productArray[i].timesClicked ++;
-        // console.log(productArray[i].timesClicked);
       }
     }
     getPictures();
@@ -129,7 +119,7 @@ var productNames = function () {
 };
 var setNamestoLocalStorage = function () {
   var names = productNames();
-  // console.log(names);
+
   localStorage.setItem('names', JSON.stringify(names));
 };
 var getProductClicks = function () {
@@ -158,13 +148,11 @@ var getPercentages = function () {
   return percentageArray;
 };
 
-
 var setDatatoLocalStorage = function () {
   var data = getProductClicks();
   var views = getProductViews();
   var percentage = getPercentages();
-  // console.log(data);
-  // console.log(views);
+
   localStorage.setItem('data', JSON.stringify(data));
   localStorage.setItem('views', JSON.stringify(views));
 };
@@ -176,10 +164,8 @@ var makeAChart = function () {
       label: 'Product Clicks',
       data: getProductClicks(),
       backgroundColor: '#ccf5ff'
-    }, {label: 'Percentage Clicks',
-      data: getPercentages(),
-      backgroundColor: '#ccffcc'
-    }]
+    },
+    ]
   };
 
   var results = document.getElementById('chart').getContext('2d');
@@ -198,8 +184,40 @@ var makeAChart = function () {
   });
 };
 
+var makeAChart2 = function () {
+  var chartData = {
+    labels: productNames(),
+    datasets: [{
+      label: 'Product Clicks Out of Times Shown',
+      data: getPercentages(),
+      backgroundColor: '#1a1a1a'
+    },
+    ]
+  };
+
+  var results = document.getElementById('chart2').getContext('2d');
+  new Chart.Bar(results, {
+    data: chartData,
+    options: {
+      responsive: false,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+};
+
+var makeCharts = function() {
+  makeAChart();
+  makeAChart2();
+};
+
 picOne.addEventListener('click', setDatatoLocalStorage , false);
 picTwo.addEventListener('click', setDatatoLocalStorage, false);
 picThree.addEventListener('click', setDatatoLocalStorage, false);
 
-button.addEventListener('click', makeAChart, false);
+button.addEventListener('click', makeCharts, false);

@@ -13,7 +13,14 @@ header {
 
 section {
   width: 325px;
+}
 
+button {
+  height: 50px;
+  border-radius: 100%;
+  font-family: helvetica;
+  color: white;
+  background-color: #1a1a1a;
 }
 
 img {
